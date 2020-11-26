@@ -1,7 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
-import os
-import jsonify
+from flask import Flask, jsonify
+import os 
 app = Flask(__name__)
 caminho = os.path.dirname(os.path.abspath(__file__))
 arquivodb = os.path.join(caminho,"clientes.db")
