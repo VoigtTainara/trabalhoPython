@@ -1,7 +1,7 @@
 $(document).ready(function(){
    $("#conteudoInicial").removeClass("invisible");
 
-     $("link_listar").click(function(){
+     $("#link_listar").click(function(){
          $.ajax({ 
             url: 'http://localhost:5000/listar_clientes', 
             method: 'GET', 
