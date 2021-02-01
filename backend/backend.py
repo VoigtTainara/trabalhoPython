@@ -16,4 +16,20 @@ def listar_clientes():
 
     return resposta
 
-app.run(debug = True)
+@app.route("/incluir_cliente", methods=['post'])
+def incluir_cliente():
+    # preparar uma resposta otimista
+    resposta = jsonify({"resultado": "ok", "detalhes": "ok"})
+    # receber as informações da nova pessoa
+    dados = request.get_json() #(force=True) dispensa Content-Type na requisição
+    try: # tentar executar a operação
+        nova = Cliente(**dados) # criar a nova pessoa
+        db.session.add(nova) # adicionar no BD
+        db.session.commit() # efetivar a operação de gravação
+    except Exception as ex: # em caso de erro...
+    # informar mensagem de erro
+        resposta = jsonify({"resultado":"erro", "detalhes":str(ex)})
+    # adicionar cabeçalho de liberação de origem
+    resposta.headers.add("Access-Control-Allow-Origin", "*")
+    return resposta # responder!
+app.run(debug=True)

@@ -30,12 +30,12 @@ $(document).ready(function(){
          }
     });
    $("#btn_incluir_cliente").click(function(){
-      client_name = $("client_name").val();
-      client_cpf = $("client_cpf").val();
+      client_name = $("#client_name").val();
+      client_cpf = $("#client_cpf").val();
 
-      dados = JSON.stringify({client_name : client_name},{client_cpf : client_cpf});
+      dados = JSON.stringify({nome : client_name, cpf : client_cpf});
       $.ajax({
-         url: 'http://localhost:5000/btn_incluir_cliente',
+         url: 'http://localhost:5000/incluir_cliente',
          type: 'POST',
          contentType: 'application/json',
          dataType: 'json',
@@ -47,10 +47,10 @@ $(document).ready(function(){
       function incluirCliente(resposta){
          if (resposta.resultado == "ok"){
             alert('Cliente incluído com sucesso!');
-            $("client_name").val();
-            $("client_cpf").val();
+            $("#client_name").val();
+            $("#client_cpf").val();
          }else{
-            alert('erro na comunicação');
+            alert('erro no backend: ' + resposta.detalhes);
          }
       }
       function erroIncluirCliente(resposta){

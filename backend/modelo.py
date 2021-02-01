@@ -26,5 +26,5 @@ if __name__ == "__main__":
     todas = db.session.query(Cliente).all()
 
     for i in todas:
-            print(i)
-            print(i.json())
+        print(i)
+        print(i.json())
