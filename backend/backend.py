@@ -32,4 +32,21 @@ def incluir_cliente():
     # adicionar cabeçalho de liberação de origem
     resposta.headers.add("Access-Control-Allow-Origin", "*")
     return resposta # responder!
+
+@app.route("/excluir_cliente/<int:cliente_id>", methods=['delete']) 
+def excluir_cliente(cliente_id): 
+    # preparar uma resposta otimista 
+    resposta = jsonify({"resultado": "ok", "detalhes": "ok"}) 
+    try: 
+        # excluir a pessoa do ID informado 
+        Cliente.query.filter(Cliente.id == cliente_id).delete() 
+        # confirmar a exclusão 
+        db.session.commit() 
+    except Exception as e: 
+        # informar mensagem de erro 
+        resposta = jsonify({"resultado":"erro", "detalhes":str(e)}) 
+     # adicionar cabeçalho de liberação de origem 
+    resposta.headers.add("Access-Control-Allow-Origin", "*") 
+    return resposta # responder!
+
 app.run(debug=True)

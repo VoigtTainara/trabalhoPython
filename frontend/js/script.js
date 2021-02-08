@@ -14,10 +14,15 @@ $(document).ready(function(){
          function listar_clientes(clientes){
             linhas=""
             for (var i in clientes){
-               lin = "<tr>"+
-                  "<td>" + clientes[i].cpf + "</td>" +
-                  "<td>" + clientes[i].nome + "</td>" +
-                  "</tr>";
+               lin = '<tr>'+
+                  '<td>' + clientes[i].cpf + '</td>' +
+                  '<td>' + clientes[i].nome + '</td>' +
+                  '<td>' + clientes[i].id + '</td>'+
+                  '<td><a href=# id="excluir_' + clientes[i].id +'" '+
+                  'class="excluir_cliente"><img src="../images/9308.png" height="20"'+ 
+                  'alt="Excluir cliente" title="Excluir cliente"></a>' + 
+                  '</td>' + 
+                  '</tr>'; 
 
                linhas = linhas+lin;
             }
@@ -57,5 +62,28 @@ $(document).ready(function(){
          alert('erro');
       }
    });
-
+   $(document).on("click", ".excluir_cliente", function() { 
+      var componente_clicado = $(this).attr('id'); 
+      var nome_icone = "excluir_"; 
+      var id_cliente = componente_clicado.substring(nome_icone.length); 
+      $.ajax({ 
+         url: 'http://localhost:5000/excluir_cliente/'+id_cliente, 
+         type: 'DELETE',
+         dataType: 'json', 
+         success: clienteExcluido,
+         error: erroAoExcluir 
+      });
+      function clienteExcluido (retorno) { 
+           if (retorno.resultado == "ok") { 
+            $("#linha_" + id_cliente).fadeOut(1000, function(){ 
+               alert("Cliente removido com sucesso!"); 
+            }); 
+         } else { 
+            alert(retorno.resultado + ":" + retorno.detalhes); 
+         } 
+      } 
+      function erroAoExcluir (retorno) { 
+            alert("erro ao excluir dados, verifique o backend: "); 
+      }
+   });
 });
